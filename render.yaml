@@ -3,7 +3,7 @@ services:
     name: earthquake-dashboard
     env: docker
     # IMPORTANT: Replace the repo URL with the URL of your own repository
-    repo: https://github.com/USERNAME/REPO-NAME
+    repo: https://github.com/laurence702/QuakeWatch
     plan: free # optional, you can choose a different plan
     branch: main # optional, default is main
     healthCheckPath: /healthz
