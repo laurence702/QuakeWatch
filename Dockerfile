@@ -27,4 +27,6 @@ RUN chmod +x ./run.sh
 # Expose the port that Streamlit runs on
 EXPOSE 8501
 
+# The command to run when the container starts
+CMD ["./run.sh"]
 

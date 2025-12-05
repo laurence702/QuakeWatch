@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: earthquake-dashboard
+    env: docker
+    # IMPORTANT: Replace the repo URL with the URL of your own repository
+    repo: https://github.com/USERNAME/REPO-NAME
+    plan: free # optional, you can choose a different plan
+    branch: main # optional, default is main
+    healthCheckPath: /healthz
+    envVars:
+      - key: PORT
+        value: 10000
