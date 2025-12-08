@@ -1,3 +1,11 @@
 MODULE_GUIDE.md
 walkthrough.md
 project-scope.md
+data/
+
+config.json
+*.json
+!config.json.template
+
+.env
+.DS_Store
