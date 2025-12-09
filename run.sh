@@ -3,8 +3,6 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Activate the virtual environment
-source venv/bin/activate
 
 echo "--- Running Data Pipeline ---"
 python src/ingest_data.py && \
