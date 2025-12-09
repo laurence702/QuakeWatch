@@ -6,13 +6,14 @@ from email.mime.text import MIMEText
 
 def load_env():
     """
-    Loads environment variables from .env file.
+    Loads environment variables from .env file if it exists.
     """
-    with open('.env', 'r') as f:
-        for line in f:
-            if line.strip() and not line.startswith('#'):
-                key, value = line.strip().split('=', 1)
-                os.environ[key] = value
+    if os.path.exists('.env'):
+        with open('.env', 'r') as f:
+            for line in f:
+                if line.strip() and not line.startswith('#'):
+                    key, value = line.strip().split('=', 1)
+                    os.environ[key] = value
 
 def load_email_config():
     """
