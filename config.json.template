@@ -1,0 +1,9 @@
+{
+    "email": {
+        "server": "smtp.mailtrap.io",
+        "port": 2525,
+        "sender_email": "${MAILTRAP_USERNAME}",
+        "sender_password": "${MAILTRAP_PASSWORD}",
+        "recipient_emails": ["testmail@mail.in", "test@mail.com"]
+    }
+}

@@ -77,3 +77,6 @@ This project successfully replicates the logic of the original system using open
     ```bash
     streamlit run src/dashboard.py
     ```
+<img width="1848" height="1022" alt="Screenshot 2025-12-06 at 9 44 43 AM" src="https://github.com/user-attachments/assets/804c47c4-3a63-4ea3-886a-10c5c82de5a5" />
+<img width="1848" height="1022" alt="Screenshot 2025-12-06 at 9 44 57 AM" src="https://github.com/user-attachments/assets/e7c1cc4a-3c4f-44d2-835a-d4ebf11cd773" />
+<img width="1848" height="1022" alt="Screenshot 2025-12-06 at 9 45 31 AM" src="https://github.com/user-attachments/assets/8113a7e3-6fb8-404a-95de-72f793a7e889" />
