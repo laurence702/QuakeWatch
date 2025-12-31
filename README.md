@@ -51,7 +51,16 @@ This project successfully replicates the logic of the original system using open
 
 ## How to Run the Project
 
-1.  **Set up the environment**:
+1.  **Run via Docker (Recommended)**:
+    ```bash
+    # Build the image
+    docker build -t earthquake-pipeline .
+
+    # Run the pipeline (mounting data volume to persist output)
+    docker run -p 8501:8501 -v "$(pwd)/data":/app/data earthquake-pipeline
+    ```
+
+2.  **Run Locally**:
     ```bash
     # Create and activate the virtual environment
     python3 -m venv venv

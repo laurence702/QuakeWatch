@@ -3,11 +3,10 @@ import json
 from datetime import datetime
 import os
 
-def fetch_and_save_earthquake_data():
+def ingest_from_usgs(bronze_dir="data/bronze"):
     """
     Fetches earthquake data from the USGS API and saves it to the bronze layer.
     """
-    # The URL for the past day's earthquake data (all magnitudes)
     url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
     
     try:
@@ -16,11 +15,8 @@ def fetch_and_save_earthquake_data():
         
         data = response.json()
         
-        # Create the bronze directory if it doesn't exist
-        bronze_dir = "data/bronze"
         os.makedirs(bronze_dir, exist_ok=True)
         
-        # Save the data to a file named with the current timestamp
         timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         file_path = os.path.join(bronze_dir, f"earthquake_data_{timestamp}.json")
         
@@ -33,4 +29,4 @@ def fetch_and_save_earthquake_data():
         print(f"Error fetching data: {e}")
 
 if __name__ == "__main__":
-    fetch_and_save_earthquake_data()
+    ingest_from_usgs()

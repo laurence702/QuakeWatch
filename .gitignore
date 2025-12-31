@@ -1,12 +1,43 @@
-MODULE_GUIDE.md
-walkthrough.md
-project-scope.md
-data/
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
 
+# macOS files
+.DS_Store
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Environment variables
+.env
+
+# Configuration files to ignore
 config.json
 *.json
 !config.json.template
 
-.env
-.DS_Store
-dumps.md
+# Project documentation to ignore
+project-scope.md
+
+# Data folders
+data/
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+build/
+dist/
+*.egg-info/
+
+# Virtual environment
+venv/
+.venv/
+ENV/
+env/
+venv.bak/
+env.bak/
