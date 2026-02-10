@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
+from src.subscription_manager import add_subscriber
 
 def run_dashboard():
     """
@@ -14,6 +15,8 @@ def run_dashboard():
     @st.cache_data
     def load_data():
         silver_dir = "data/silver"
+        if not os.path.exists(silver_dir):
+            return pd.DataFrame()
         silver_files = [f for f in os.listdir(silver_dir) if f.endswith('.parquet')]
         if not silver_files:
             return pd.DataFrame()
@@ -26,16 +29,39 @@ def run_dashboard():
 
     df = load_data()
 
-    if df.empty:
-        st.warning("No data found. Please run the ingestion and processing scripts first.")
-        return
-
-    # --- Sidebar Filters ---
+    # --- Sidebar ---
     st.sidebar.header("Filters")
-    min_mag = st.sidebar.slider("Minimum Magnitude", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
-    filtered_df = df[df['magnitude'] >= min_mag]
+    
+    if not df.empty:
+        min_mag = st.sidebar.slider("Minimum Magnitude", min_value=0.0, max_value=10.0, value=1.0, step=0.1)
+        filtered_df = df[df['magnitude'] >= min_mag]
+    else:
+        filtered_df = df
+        st.sidebar.warning("No data loaded.")
+
+    # --- Subscription Form in Sidebar ---
+    st.sidebar.header("Subscribe to Alerts")
+    with st.sidebar.form("subscription_form"):
+        email = st.text_input("Email")
+        location = st.text_input("Location (e.g., 'San Francisco, CA')")
+        submitted = st.form_submit_button("Subscribe")
+        
+        if submitted:
+            if email and location:
+                try:
+                    add_subscriber(email, location)
+                    st.success(f"Successfully subscribed {email} for alerts near {location}!")
+                except Exception as e:
+                    st.error(f"Failed to subscribe: {e}")
+            else:
+                st.warning("Please provide both email and location.")
+
 
     # --- Main Page Layout ---
+    if df.empty:
+        st.warning("No data found. Please run the ingestion and processing scripts (`run.sh`) first.")
+        return
+
     col1, col2 = st.columns((2, 1))
 
     with col1:

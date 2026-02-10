@@ -4,4 +4,6 @@ pyarrow
 streamlit
 plotly
 pytest
+geopy
+pytest-asyncio
 
