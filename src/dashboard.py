@@ -2,6 +2,12 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
+import sys
+
+# Add the project root to the sys.path
+# This ensures that 'src' can be imported as a package
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.subscription_manager import add_subscriber
 
 def run_dashboard():
@@ -9,7 +15,12 @@ def run_dashboard():
     Runs the Streamlit dashboard.
     """
     st.set_page_config(layout="wide")
-    st.title("Earthquake Analysis Dashboard 🌎")
+
+    # Inject custom CSS
+    with open("src/style.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+    st.title("Safeguarding Your Family: Real-time Earthquake Alerts & Monitoring 👨‍👩‍👧‍👦")
 
     # --- Load Data ---
     @st.cache_data
@@ -62,10 +73,11 @@ def run_dashboard():
         st.warning("No data found. Please run the ingestion and processing scripts (`run.sh`) first.")
         return
 
-    col1, col2 = st.columns((2, 1))
+    # Use a wider column for the map, and a narrower one for stats/recent events
+    col_map, col_stats_recent = st.columns((3, 1))
 
-    with col1:
-        st.header("Earthquake Map")
+    with col_map:
+        st.header("Global Earthquake Activity")
         if not filtered_df.empty:
             fig = px.scatter_geo(
                 filtered_df,
@@ -74,23 +86,51 @@ def run_dashboard():
                 size='magnitude',
                 color='magnitude',
                 hover_name='place',
-                projection="natural earth",
-                title="Earthquakes around the World",
-                color_continuous_scale=px.colors.sequential.Plasma
+                hover_data={
+                    'magnitude': ':.2f',
+                    'time': '|%Y-%m-%d %H:%M:%S',
+                    'depth': True,
+                    'latitude': ':.2f',
+                    'longitude': ':.2f'
+                },
+                projection="orthographic",
+                title="Interactive Earthquake Map",
+                color_continuous_scale=px.colors.sequential.Hot_r
             )
-            fig.update_layout(margin={"r":0,"t":50,"l":0,"b":0})
+            fig.update_layout(
+                margin={"r":0,"t":50,"l":0,"b":0},
+                geo=dict(
+                    showland=True,
+                    landcolor="#2b2b40",
+                    showocean=True,
+                    oceancolor="#1a1a2e",
+                    showcountries=True,
+                    countrycolor="#4a4a6b"
+                ),
+                paper_bgcolor="#1a1a2e",
+                plot_bgcolor="#1a1a2e",
+                font_color="#e0e0e0"
+            )
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info("No earthquakes match the current filter settings.")
 
-    with col2:
-        st.header("Summary Statistics")
+    with col_stats_recent:
+        st.header("Summary")
         st.metric("Total Earthquakes (Filtered)", len(filtered_df))
         if not filtered_df.empty:
             st.metric("Highest Magnitude", f"{filtered_df['magnitude'].max():.2f}")
-            st.metric("Most Recent Earthquake", filtered_df['time'].dt.strftime('%Y-%m-%d %H:%M:%S').iloc[0])
+            st.metric("Most Recent Event", filtered_df['time'].dt.strftime('%Y-%m-%d %H:%M:%S').iloc[0])
+            st.markdown("---")
+            st.header("Recent Earthquakes")
+            # Display a more concise list of recent earthquakes
+            for i, row in filtered_df.head(5).iterrows(): # Show top 5 recent events
+                st.markdown(f"**{row['magnitude']:.1f}** - {row['place']} ({row['time'].strftime('%H:%M')})")
+        else:
+            st.info("No data for summary.")
 
-    st.header("Earthquake Data Table")
+    st.markdown("---") # Separator
+    st.header("Full Earthquake Data")
     st.dataframe(filtered_df[['time', 'place', 'magnitude', 'depth', 'tsunami']], use_container_width=True)
 
 

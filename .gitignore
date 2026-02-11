@@ -21,6 +21,7 @@ config.json
 
 # Project documentation to ignore
 project-scope.md
+PRODUCT_REQUIREMENTS_DOCUMENT.txt
 
 # Data folders
 data/
