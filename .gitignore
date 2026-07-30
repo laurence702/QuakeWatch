@@ -42,3 +42,5 @@ ENV/
 env/
 venv.bak/
 env.bak/
+*.db
+subscriptions.db

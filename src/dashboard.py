@@ -94,7 +94,7 @@ def run_dashboard():
                     'longitude': ':.2f'
                 },
                 projection="orthographic",
-                title="Interactive Earthquake Map",
+                title="_",
                 color_continuous_scale=px.colors.sequential.Hot_r
             )
             fig.update_layout(
